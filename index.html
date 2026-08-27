@@ -6,38 +6,222 @@
 <link rel="manifest" href="/manifest.webmanifest"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
 <title>Blanca Nieves · Control de Cuotas</title>
 <style>
-:root{--pink:#be185d;--pink2:#ec4899;--blue:#173c78;--green:#16803a;--red:#d92d20;--bg:#fff8fc;--card:#fff;--text:#172033;--muted:#667085;--border:#eadbe6}*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:linear-gradient(#fff,var(--bg));color:var(--text)}button,input,select,textarea{font:inherit}.wrap{width:min(1180px,calc(100% - 24px));margin:auto;padding:18px 0 50px}.card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:16px;margin-bottom:14px}.hero{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap}.brand{display:flex;gap:14px;align-items:center}.logo{width:82px;height:82px;object-fit:contain;border-radius:16px}.eyebrow{color:var(--pink);font-weight:800;font-size:12px;letter-spacing:.12em;text-transform:uppercase}h1{margin:2px 0;font-size:30px}.sub{color:var(--muted);font-size:14px}.btn{border:1px solid var(--border);border-radius:12px;background:#fff;padding:10px 13px;font-weight:800;cursor:pointer}.primary{background:linear-gradient(135deg,var(--pink),var(--pink2));color:#fff;border:0}.green{background:var(--green);color:#fff;border:0}.blue{background:var(--blue);color:#fff;border:0}.danger{color:var(--red)}label{font-size:13px;font-weight:700}input,select,textarea{width:100%;padding:11px 12px;border:1px solid var(--border);border-radius:12px;background:#fff}.grid{display:grid;gap:10px}.stats{grid-template-columns:repeat(6,1fr)}.stat{background:#fff;border:1px solid var(--border);border-radius:16px;padding:13px}.k{color:var(--muted);font-size:11px;font-weight:700}.v{font-size:21px;font-weight:850}.toolbar{grid-template-columns:minmax(220px,1fr) 170px 150px auto}.period{display:flex;gap:8px}.period label{min-width:110px}.actions{display:flex;gap:6px;flex-wrap:wrap}.table{overflow:auto}.table table{width:100%;min-width:1000px;border-collapse:collapse}.table th,.table td{padding:11px;border-bottom:1px solid #f3e8ef;text-align:left;font-size:13px}.table th{font-size:11px;color:var(--muted);text-transform:uppercase}.badge{padding:5px 8px;border-radius:999px;font-size:11px;font-weight:800}.paid{background:#ecfdf3;color:#067647}.pending{background:#fff7ed;color:#b54708}.hidden{display:none!important}.login{max-width:460px;margin:60px auto}.login .logo{display:block;margin:auto;width:120px;height:120px}.login h2{text-align:center}.login p{text-align:center;color:var(--muted)}.form{grid-template-columns:repeat(5,1fr)}.full{grid-column:1/-1}.statusbar{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)}.dot{width:9px;height:9px;border-radius:50%;background:#f59e0b}.dot.ok{background:#22c55e}.install{display:none}@media(max-width:900px){.stats{grid-template-columns:repeat(3,1fr)}.toolbar,.form{grid-template-columns:1fr 1fr}}@media(max-width:640px){.stats{grid-template-columns:1fr 1fr}.toolbar,.form{grid-template-columns:1fr}.period{width:100%}.period label{flex:1}.hero{align-items:flex-start}.logo{width:68px;height:68px}.actions .btn{flex:1}}
+:root{--pink:#be185d;--pink2:#ec4899;--blue:#173c78;--green:#16803a;--red:#d92d20;--bg:#fff8fc;--card:#fff;--text:#172033;--muted:#667085;--border:#eadbe6}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:linear-gradient(#fff,var(--bg));color:var(--text)}
+button,input,select,textarea{font:inherit}.wrap{width:min(1180px,calc(100% - 24px));margin:auto;padding:18px 0 50px}.card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:16px;margin-bottom:14px}
+.hero{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap}.brand{display:flex;gap:14px;align-items:center}.logo{width:82px;height:82px;object-fit:contain;border-radius:16px}
+.eyebrow{color:var(--pink);font-weight:800;font-size:12px;letter-spacing:.12em;text-transform:uppercase}h1{margin:2px 0;font-size:30px}.sub{color:var(--muted);font-size:14px}
+.btn{border:1px solid var(--border);border-radius:12px;background:#fff;padding:10px 13px;font-weight:800;cursor:pointer}.primary{background:linear-gradient(135deg,var(--pink),var(--pink2));color:#fff;border:0}.green{background:var(--green);color:#fff;border:0}.blue{background:var(--blue);color:#fff;border:0}.danger{color:var(--red)}
+.portalBox{padding:0}.portalBtn{display:flex;width:100%;align-items:center;justify-content:center;gap:10px;text-decoration:none;background:linear-gradient(135deg,#9d174d,#ec4899);color:#fff;border-radius:20px;padding:20px 16px;font-size:22px;font-weight:950;letter-spacing:.035em;box-shadow:0 8px 22px rgba(190,24,93,.18)}
+.portalBtn small{display:block;font-size:12px;font-weight:650;letter-spacing:0;opacity:.9}
+label{font-size:13px;font-weight:700}input,select,textarea{width:100%;padding:11px 12px;border:1px solid var(--border);border-radius:12px;background:#fff}.grid{display:grid;gap:10px}
+.stats{grid-template-columns:repeat(6,1fr)}.stat{background:#fff;border:1px solid var(--border);border-radius:16px;padding:13px}.k{color:var(--muted);font-size:11px;font-weight:700}.v{font-size:21px;font-weight:850}
+.toolbar{grid-template-columns:minmax(220px,1fr) 170px 150px auto}.period{display:flex;gap:8px}.period label{min-width:110px}.actions{display:flex;gap:6px;flex-wrap:wrap}
+.table{overflow:auto}.table table{width:100%;min-width:1000px;border-collapse:collapse}.table th,.table td{padding:11px;border-bottom:1px solid #f3e8ef;text-align:left;font-size:13px}.table th{font-size:11px;color:var(--muted);text-transform:uppercase}
+.badge{padding:5px 8px;border-radius:999px;font-size:11px;font-weight:800}.paid{background:#ecfdf3;color:#067647}.pending{background:#fff7ed;color:#b54708}.hidden{display:none!important}
+.login{max-width:460px;margin:60px auto}.login .logo{display:block;margin:auto;width:120px;height:120px}.login h2{text-align:center}.login p{text-align:center;color:var(--muted)}
+.form{grid-template-columns:repeat(5,1fr)}.full{grid-column:1/-1}.statusbar{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)}.dot{width:9px;height:9px;border-radius:50%;background:#f59e0b}.dot.ok{background:#22c55e}.install{display:none}
+.hint{font-size:11px;color:var(--muted);margin-top:5px;line-height:1.35}
+@media(max-width:900px){.stats{grid-template-columns:repeat(3,1fr)}.toolbar,.form{grid-template-columns:1fr 1fr}}
+@media(max-width:640px){.stats{grid-template-columns:1fr 1fr}.toolbar,.form{grid-template-columns:1fr}.period{width:100%}.period label{flex:1}.hero{align-items:flex-start}.logo{width:68px;height:68px}.actions .btn{flex:1}.portalBtn{font-size:20px}}
 </style>
 </head>
 <body>
-<div id="loginView" class="wrap hidden"><section class="card login"><img class="logo" src="/logo-blanca-nieves.jpg"><h2>Escuela de Lenguaje Blanca Nieves</h2><p>Ingresa para acceder al registro compartido.</p><div class="grid"><label>Correo<input id="loginEmail" type="email" autocomplete="email"></label><label>Contraseña<input id="loginPassword" type="password" autocomplete="current-password"></label><button id="loginBtn" class="btn primary">Ingresar</button><div id="loginMsg" class="sub"></div></div></section></div>
+
+<div id="loginView" class="wrap hidden">
+<section class="card login">
+<img class="logo" src="/logo-blanca-nieves.jpg">
+<h2>Escuela de Lenguaje Blanca Nieves</h2>
+<p>Ingresa para acceder al registro compartido.</p>
+<div class="grid">
+<label>Correo<input id="loginEmail" type="email" autocomplete="email"></label>
+<label>Contraseña<input id="loginPassword" type="password" autocomplete="current-password"></label>
+<button id="loginBtn" class="btn primary">Ingresar</button>
+<div id="loginMsg" class="sub"></div>
+</div>
+</section>
+</div>
+
 <main id="appView" class="wrap hidden">
-<section class="card hero"><div class="brand"><img class="logo" src="/logo-blanca-nieves.jpg"><div><div class="eyebrow">Escuela de Lenguaje</div><h1>Blanca Nieves</h1><div class="sub">Control mensual de cuotas</div><div class="statusbar"><span id="syncDot" class="dot"></span><span id="syncText">Modo local</span></div></div></div><div class="actions"><button id="installBtn" class="btn install">Instalar app</button><button id="logoutBtn" class="btn hidden">Salir</button></div><div class="period"><label>Mes<select id="month"><option>Enero</option><option>Febrero</option><option>Marzo</option><option>Abril</option><option>Mayo</option><option>Junio</option><option>Julio</option><option selected>Agosto</option><option>Septiembre</option><option>Octubre</option><option>Noviembre</option><option>Diciembre</option></select></label><label>Año<select id="year"><option>2025</option><option selected>2026</option><option>2027</option><option>2028</option></select></label></div></section>
-<section class="grid stats"><div class="stat"><div class="k">Estudiantes</div><div id="sTotal" class="v">0</div></div><div class="stat"><div class="k">Pagados</div><div id="sPaid" class="v">0</div></div><div class="stat"><div class="k">Pendientes</div><div id="sPending" class="v">0</div></div><div class="stat"><div class="k">Esperado</div><div id="sExpected" class="v">$0</div></div><div class="stat"><div class="k">Recaudado</div><div id="sCollected" class="v">$0</div></div><div class="stat"><div class="k">Pendiente $</div><div id="sOutstanding" class="v">$0</div></div></section>
-<section class="card"><div class="grid toolbar"><label>Buscar<input id="search" placeholder="Estudiante o apoderado"></label><label>Curso<select id="course"><option value="all">Todos</option></select></label><label>Estado<select id="status"><option value="all">Todos</option><option value="paid">Pagados</option><option value="pending">Pendientes</option></select></label><div class="actions"><button id="exportBtn" class="btn">Exportar CSV</button><button id="addBtn" class="btn primary">+ Agregar</button></div></div><div class="table"><table><thead><tr><th>Estudiante</th><th>Apoderado</th><th>Teléfono</th><th>Curso</th><th>Cuota</th><th>Estado</th><th>Fecha</th><th>Acciones</th></tr></thead><tbody id="tbody"></tbody></table></div></section>
-<section id="formCard" class="card hidden"><div class="grid form"><label>Estudiante<input id="fStudent"></label><label>Apoderado<input id="fGuardian"></label><label>WhatsApp<input id="fPhone" placeholder="+569..."></label><label>Curso<input id="fCourse"></label><label>Cuota<input id="fAmount" type="number" value="15000"></label><label class="full">Observaciones<input id="fNotes"></label><div class="full actions"><button id="saveBtn" class="btn primary">Guardar</button><button id="cancelBtn" class="btn">Cancelar</button></div></div></section>
+<section class="card hero">
+<div class="brand"><img class="logo" src="/logo-blanca-nieves.jpg"><div><div class="eyebrow">Escuela de Lenguaje</div><h1>Blanca Nieves</h1><div class="sub">Control mensual de cuotas</div><div class="statusbar"><span id="syncDot" class="dot"></span><span id="syncText">Modo local</span></div></div></div>
+<div class="actions"><button id="installBtn" class="btn install">Instalar app</button><button id="logoutBtn" class="btn hidden">Salir</button></div>
+<div class="period"><label>Mes<select id="month"><option>Enero</option><option>Febrero</option><option>Marzo</option><option>Abril</option><option>Mayo</option><option>Junio</option><option>Julio</option><option selected>Agosto</option><option>Septiembre</option><option>Octubre</option><option>Noviembre</option><option>Diciembre</option></select></label><label>Año<select id="year"><option>2025</option><option selected>2026</option><option>2027</option><option>2028</option></select></label></div>
+</section>
+
+<section class="card portalBox">
+<a class="portalBtn" href="/pagar.html">
+<span>💳 PORTAL DE PAGO</span>
+</a>
+</section>
+
+<section class="grid stats">
+<div class="stat"><div class="k">Estudiantes</div><div id="sTotal" class="v">0</div></div>
+<div class="stat"><div class="k">Pagados</div><div id="sPaid" class="v">0</div></div>
+<div class="stat"><div class="k">Pendientes</div><div id="sPending" class="v">0</div></div>
+<div class="stat"><div class="k">Esperado</div><div id="sExpected" class="v">$0</div></div>
+<div class="stat"><div class="k">Recaudado</div><div id="sCollected" class="v">$0</div></div>
+<div class="stat"><div class="k">Pendiente $</div><div id="sOutstanding" class="v">$0</div></div>
+</section>
+
+<section class="card">
+<div class="grid toolbar">
+<label>Buscar<input id="search" placeholder="Estudiante o apoderado"></label>
+<label>Curso<select id="course"><option value="all">Todos</option></select></label>
+<label>Estado<select id="status"><option value="all">Todos</option><option value="paid">Pagados</option><option value="pending">Pendientes</option></select></label>
+<div class="actions"><button id="exportBtn" class="btn">Exportar CSV</button><button id="addBtn" class="btn primary">+ Agregar</button></div>
+</div>
+<div class="table"><table><thead><tr><th>Estudiante</th><th>Apoderado</th><th>Teléfono</th><th>Curso</th><th>Cuota</th><th>Estado</th><th>Fecha</th><th>Acciones</th></tr></thead><tbody id="tbody"></tbody></table></div>
+</section>
+
+<section id="formCard" class="card hidden">
+<div class="grid form">
+<label>Estudiante
+<input id="fStudent" placeholder="PRIMER NOMBRE DOS APELLIDOS">
+<div class="hint">Para el portal de pago ingrese el primer nombre y los dos apellidos. Se guardará automáticamente en MAYÚSCULAS y SIN ACENTOS.</div>
+</label>
+<label>Apoderado
+<input id="fGuardian" placeholder="NOMBRE APELLIDO">
+<div class="hint">Se guardará automáticamente en MAYÚSCULAS y SIN ACENTOS.</div>
+</label>
+<label>WhatsApp<input id="fPhone" placeholder="+569..."></label>
+<label>Curso<input id="fCourse"></label>
+<label>Cuota<input id="fAmount" type="number" value="15000"></label>
+<label class="full">Observaciones<input id="fNotes"></label>
+<div class="full actions"><button id="saveBtn" class="btn primary">Guardar</button><button id="cancelBtn" class="btn">Cancelar</button></div>
+</div>
+</section>
 </main>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="/supabase-config.js"></script>
 <script>
-(async()=>{if('serviceWorker'in navigator)navigator.serviceWorker.register('/service-worker.js');const $=s=>document.querySelector(s),money=n=>new Intl.NumberFormat('es-CL',{style:'currency',currency:'CLP',maximumFractionDigits:0}).format(n||0);let deferredPrompt=null;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;$('#installBtn').style.display='inline-block'});$('#installBtn').onclick=async()=>{if(deferredPrompt){deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null;$('#installBtn').style.display='none'}};
-const configured=!!(window.BN_SUPABASE_URL&&window.BN_SUPABASE_ANON_KEY);const sb=configured?supabase.createClient(window.BN_SUPABASE_URL,window.BN_SUPABASE_ANON_KEY):null;let rows=[],payments={};const key=()=>`${$('#year').value}-${$('#month').value}`;function localLoad(){try{return JSON.parse(localStorage.getItem('blancaNievesCuotasV2'))||[]}catch{return[]}}function localSave(){localStorage.setItem('blancaNievesCuotasV2',JSON.stringify(rows))}function payState(id){return payments[id]||{paid:false,paid_date:''}}
-async function load(){if(configured){const {data:s}=await sb.from('students').select('*').order('student');rows=s||[];const {data:p}=await sb.from('payments').select('*').eq('year',+$('#year').value).eq('month',$('#month').value);payments={};(p||[]).forEach(x=>payments[x.student_id]=x);$('#syncDot').classList.add('ok');$('#syncText').textContent='Sincronizado en la nube'}else{rows=localLoad();$('#syncText').textContent='Sin conexión a Supabase'}rebuild();render()}
-function rebuild(){const c=$('#course'),cur=c.value;const vals=[...new Set(rows.map(r=>r.course))].sort();c.innerHTML='<option value="all">Todos</option>'+vals.map(v=>`<option>${v}</option>`).join('');if(vals.includes(cur))c.value=cur}
-function render(){const term=$('#search').value.toLowerCase(),cf=$('#course').value,sf=$('#status').value;const view=rows.filter(r=>{const p=payState(r.id);return(!term||`${r.student} ${r.guardian}`.toLowerCase().includes(term))&&(cf==='all'||r.course===cf)&&(sf==='all'||(sf==='paid'?p.paid:!p.paid))});$('#tbody').innerHTML=view.map(r=>{const p=payState(r.id);return`<tr><td><b>${r.student}</b></td><td>${r.guardian}</td><td>${r.phone||'—'}</td><td>${r.course}</td><td>${money(r.amount)}</td><td><span class="badge ${p.paid?'paid':'pending'}">${p.paid?'Pagado':'Pendiente'}</span></td><td>${p.paid_date||'—'}</td><td><div class="actions"><button class="btn ${p.paid?'':'blue'}" data-pay="${r.id}">${p.paid?'Marcar pendiente':'Registrar pago'}</button>${!p.paid?`<button class="btn primary" data-wa="${r.id}">Notificar</button>`:''}<button class="btn danger" data-del="${r.id}">Eliminar</button></div></td></tr>`}).join('');const paid=rows.filter(r=>payState(r.id).paid),expected=rows.reduce((a,r)=>a+(+r.amount||0),0),collected=paid.reduce((a,r)=>a+(+r.amount||0),0);$('#sTotal').textContent=rows.length;$('#sPaid').textContent=paid.length;$('#sPending').textContent=rows.length-paid.length;$('#sExpected').textContent=money(expected);$('#sCollected').textContent=money(collected);$('#sOutstanding').textContent=money(expected-collected)}
-async function togglePay(id){const r=rows.find(x=>x.id==id),cur=payState(r.id),next=!cur.paid,date=next?new Date().toISOString().slice(0,10):null;if(configured){await sb.from('payments').upsert({student_id:r.id,year:+$('#year').value,month:$('#month').value,paid:next,paid_date:date},{onConflict:'student_id,year,month'});await load()}else{payments[r.id]={paid:next,paid_date:date};localStorage.setItem('bnPayments-'+key(),JSON.stringify(payments));render()}}
-$('#tbody').onclick=async e=>{const p=e.target.closest('[data-pay]'),w=e.target.closest('[data-wa]'),d=e.target.closest('[data-del]');if(p)return togglePay(p.dataset.pay);if(w){const r=rows.find(x=>x.id==w.dataset.wa);const text=encodeURIComponent(`Escuela de Lenguaje Blanca Nieves
+(async()=>{
+if('serviceWorker'in navigator)navigator.serviceWorker.register('/service-worker.js');
+const $=s=>document.querySelector(s),money=n=>new Intl.NumberFormat('es-CL',{style:'currency',currency:'CLP',maximumFractionDigits:0}).format(n||0);
 
-Estimado/a apoderado/a ${r.guardian}:
+function upperNoAccentKeepSpaces(v){
+  return String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase();
+}
+function normalizedName(v){
+  return upperNoAccentKeepSpaces(v).replace(/\s+/g,' ').trim();
+}
 
-Se encuentra pendiente la cuota de ${$('#month').value} correspondiente a ${r.student}.
+let deferredPrompt=null;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;$('#installBtn').style.display='inline-block'});
+$('#installBtn').onclick=async()=>{if(deferredPrompt){deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null;$('#installBtn').style.display='none'}};
 
-Monto: ${money(r.amount)}
+const configured=!!(window.BN_SUPABASE_URL&&window.BN_SUPABASE_ANON_KEY);
+const sb=configured?supabase.createClient(window.BN_SUPABASE_URL,window.BN_SUPABASE_ANON_KEY):null;
+let rows=[],payments={};
+const key=()=>`${$('#year').value}-${$('#month').value}`;
+function localLoad(){try{return JSON.parse(localStorage.getItem('blancaNievesCuotasV2'))||[]}catch{return[]}}
+function localSave(){localStorage.setItem('blancaNievesCuotasV2',JSON.stringify(rows))}
+function payState(id){return payments[id]||{paid:false,paid_date:''}}
 
-Si el pago ya fue realizado, por favor envíe el comprobante. Muchas gracias.`);window.open(`https://wa.me/${(r.phone||'').replace(/\D/g,'')}?text=${text}`,'_blank')}if(d&&confirm('¿Eliminar este estudiante?')){const id=+d.dataset.del;if(configured)await sb.from('students').delete().eq('id',id);else{rows=rows.filter(x=>x.id!==id);localSave()}await load()}};
-$('#addBtn').onclick=()=>$('#formCard').classList.remove('hidden');$('#cancelBtn').onclick=()=>$('#formCard').classList.add('hidden');$('#saveBtn').onclick=async()=>{const obj={student:$('#fStudent').value.trim(),guardian:$('#fGuardian').value.trim(),phone:$('#fPhone').value.trim(),course:$('#fCourse').value.trim(),amount:+$('#fAmount').value||15000,notes:$('#fNotes').value.trim()};if(!obj.student||!obj.guardian||!obj.course)return alert('Completa estudiante, apoderado y curso.');if(configured)await sb.from('students').insert(obj);else{obj.id=Date.now();rows.push(obj);localSave()}$('#formCard').classList.add('hidden');await load()};
-$('#exportBtn').onclick=()=>{const data=[['Estudiante','Apoderado','Telefono','Curso','Cuota','Estado'],...rows.map(r=>[r.student,r.guardian,r.phone,r.course,r.amount,payState(r.id).paid?'Pagado':'Pendiente'])];const csv=data.map(x=>x.map(v=>`"${String(v??'').replace(/"/g,'""')}"`).join(';')).join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv'}));a.download=`cuotas-${$('#month').value}-${$('#year').value}.csv`;a.click()};
-['search','course','status'].forEach(id=>$('#'+id).addEventListener(id==='search'?'input':'change',render));['month','year'].forEach(id=>$('#'+id).onchange=async()=>{if(!configured){try{payments=JSON.parse(localStorage.getItem('bnPayments-'+key()))||{}}catch{payments={}}}await load()});
-if(!configured){document.body.innerHTML='<main class="wrap"><section class="card login"><img class="logo" src="/logo-blanca-nieves.jpg"><h2>Configuración incompleta</h2><p>La aplicación no está conectada a Supabase. Actualiza supabase-config.js y vuelve a desplegar.</p></section></main>';return;}
-const {data:{session}}=await sb.auth.getSession();if(session){$('#appView').classList.remove('hidden');$('#logoutBtn').classList.remove('hidden');load()}else $('#loginView').classList.remove('hidden');$('#loginBtn').onclick=async()=>{const {error}=await sb.auth.signInWithPassword({email:$('#loginEmail').value,password:$('#loginPassword').value});if(error)return $('#loginMsg').textContent=error.message;location.reload()};$('#logoutBtn').onclick=async()=>{await sb.auth.signOut();location.reload()}
+async function load(){
+ if(configured){
+   const {data:s}=await sb.from('students').select('*').order('student');rows=s||[];
+   const {data:p}=await sb.from('payments').select('*').eq('year',+$('#year').value).eq('month',$('#month').value);
+   payments={};(p||[]).forEach(x=>payments[x.student_id]=x);
+   $('#syncDot').classList.add('ok');$('#syncText').textContent='Sincronizado en la nube'
+ }else{rows=localLoad();$('#syncText').textContent='Sin conexión a Supabase'}
+ rebuild();render()
+}
+
+function rebuild(){
+ const c=$('#course'),cur=c.value;
+ const vals=[...new Set(rows.map(r=>r.course))].sort();
+ c.innerHTML='<option value="all">Todos</option>'+vals.map(v=>`<option>${v}</option>`).join('');
+ if(vals.includes(cur))c.value=cur
+}
+
+function render(){
+ const term=$('#search').value.toLowerCase(),cf=$('#course').value,sf=$('#status').value;
+ const view=rows.filter(r=>{const p=payState(r.id);return(!term||`${r.student} ${r.guardian}`.toLowerCase().includes(term))&&(cf==='all'||r.course===cf)&&(sf==='all'||(sf==='paid'?p.paid:!p.paid))});
+ $('#tbody').innerHTML=view.map(r=>{const p=payState(r.id);return`<tr><td><b>${r.student}</b></td><td>${r.guardian}</td><td>${r.phone||'—'}</td><td>${r.course}</td><td>${money(r.amount)}</td><td><span class="badge ${p.paid?'paid':'pending'}">${p.paid?'Pagado':'Pendiente'}</span></td><td>${p.paid_date||'—'}</td><td><div class="actions"><button class="btn ${p.paid?'':'blue'}" data-pay="${r.id}">${p.paid?'Marcar pendiente':'Registrar pago'}</button>${!p.paid?`<button class="btn primary" data-wa="${r.id}">Notificar</button>`:''}<button class="btn danger" data-del="${r.id}">Eliminar</button></div></td></tr>`}).join('');
+ const paid=rows.filter(r=>payState(r.id).paid),expected=rows.reduce((a,r)=>a+(+r.amount||0),0),collected=paid.reduce((a,r)=>a+(+r.amount||0),0);
+ $('#sTotal').textContent=rows.length;$('#sPaid').textContent=paid.length;$('#sPending').textContent=rows.length-paid.length;$('#sExpected').textContent=money(expected);$('#sCollected').textContent=money(collected);$('#sOutstanding').textContent=money(expected-collected)
+}
+
+async function togglePay(id){
+ const r=rows.find(x=>x.id==id),cur=payState(r.id),next=!cur.paid,date=next?new Date().toISOString().slice(0,10):null;
+ if(configured){await sb.from('payments').upsert({student_id:r.id,year:+$('#year').value,month:$('#month').value,paid:next,paid_date:date},{onConflict:'student_id,year,month'});await load()}
+ else{payments[r.id]={paid:next,paid_date:date};localStorage.setItem('bnPayments-'+key(),JSON.stringify(payments));render()}
+}
+
+$('#tbody').onclick=async e=>{
+ const p=e.target.closest('[data-pay]'),w=e.target.closest('[data-wa]'),d=e.target.closest('[data-del]');
+ if(p)return togglePay(p.dataset.pay);
+ if(w){
+   const r=rows.find(x=>x.id==w.dataset.wa);
+   const text=encodeURIComponent(`Escuela de Lenguaje Blanca Nieves\n\nEstimado/a apoderado/a ${r.guardian}:\n\nSe encuentra pendiente la cuota de ${$('#month').value} correspondiente a ${r.student}.\n\nMonto: ${money(r.amount)}\n\nSi el pago ya fue realizado, por favor envíe el comprobante. Muchas gracias.`);
+   window.open(`https://wa.me/${(r.phone||'').replace(/\D/g,'')}?text=${text}`,'_blank')
+ }
+ if(d&&confirm('¿Eliminar este estudiante?')){
+   const id=+d.dataset.del;
+   if(configured)await sb.from('students').delete().eq('id',id);
+   else{rows=rows.filter(x=>x.id!==id);localSave()}
+   await load()
+ }
+};
+
+$('#addBtn').onclick=()=>$('#formCard').classList.remove('hidden');
+$('#cancelBtn').onclick=()=>$('#formCard').classList.add('hidden');
+
+$('#fStudent').addEventListener('input',()=>{$('#fStudent').value=upperNoAccentKeepSpaces($('#fStudent').value)});
+$('#fGuardian').addEventListener('input',()=>{$('#fGuardian').value=upperNoAccentKeepSpaces($('#fGuardian').value)});
+$('#fStudent').addEventListener('blur',()=>{$('#fStudent').value=normalizedName($('#fStudent').value)});
+$('#fGuardian').addEventListener('blur',()=>{$('#fGuardian').value=normalizedName($('#fGuardian').value)});
+
+$('#saveBtn').onclick=async()=>{
+ const student=normalizedName($('#fStudent').value);
+ const guardian=normalizedName($('#fGuardian').value);
+ const obj={
+   student,
+   payment_name:student,
+   guardian,
+   phone:$('#fPhone').value.trim(),
+   course:$('#fCourse').value.trim(),
+   amount:+$('#fAmount').value||15000,
+   notes:$('#fNotes').value.trim()
+ };
+ if(!obj.student||!obj.guardian||!obj.course)return alert('Completa estudiante, apoderado y curso.');
+ if(obj.student.split(' ').filter(Boolean).length<3)return alert('Para el portal de pago, ingrese el primer nombre y los dos apellidos del estudiante.');
+ if(configured){
+   const {error}=await sb.from('students').insert(obj);
+   if(error){console.error(error);return alert('No se pudo guardar el estudiante: '+error.message)}
+ }else{obj.id=Date.now();rows.push(obj);localSave()}
+ $('#fStudent').value='';$('#fGuardian').value='';$('#fPhone').value='';$('#fCourse').value='';$('#fNotes').value='';
+ $('#formCard').classList.add('hidden');
+ await load()
+};
+
+$('#exportBtn').onclick=()=>{
+ const data=[['Estudiante','Apoderado','Telefono','Curso','Cuota','Estado'],...rows.map(r=>[r.student,r.guardian,r.phone,r.course,r.amount,payState(r.id).paid?'Pagado':'Pendiente'])];
+ const csv=data.map(x=>x.map(v=>`"${String(v??'').replace(/"/g,'""')}"`).join(';')).join('\n');
+ const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv'}));a.download=`cuotas-${$('#month').value}-${$('#year').value}.csv`;a.click()
+};
+
+['search','course','status'].forEach(id=>$('#'+id).addEventListener(id==='search'?'input':'change',render));
+['month','year'].forEach(id=>$('#'+id).onchange=async()=>{if(!configured){try{payments=JSON.parse(localStorage.getItem('bnPayments-'+key()))||{}}catch{payments={}}}await load()});
+
+if(!configured){
+ document.body.innerHTML='<main class="wrap"><section class="card login"><img class="logo" src="/logo-blanca-nieves.jpg"><h2>Configuración incompleta</h2><p>La aplicación no está conectada a Supabase. Actualiza supabase-config.js y vuelve a desplegar.</p></section></main>';return;
+}
+
+const {data:{session}}=await sb.auth.getSession();
+if(session){$('#appView').classList.remove('hidden');$('#logoutBtn').classList.remove('hidden');load()}
+else $('#loginView').classList.remove('hidden');
+
+$('#loginBtn').onclick=async()=>{
+ $('#loginMsg').textContent='Ingresando...';
+ const {error}=await sb.auth.signInWithPassword({email:$('#loginEmail').value.trim(),password:$('#loginPassword').value});
+ if(error){$('#loginMsg').textContent='No fue posible ingresar. Revisa correo y contraseña.';return}
+ $('#loginView').classList.add('hidden');$('#appView').classList.remove('hidden');$('#logoutBtn').classList.remove('hidden');$('#loginMsg').textContent='';await load()
+};
+$('#loginPassword').addEventListener('keydown',e=>{if(e.key==='Enter')$('#loginBtn').click()});
+$('#logoutBtn').onclick=async()=>{await sb.auth.signOut();location.reload()};
 })();
-</script></body></html>
+</script>
+</body>
+</html>
