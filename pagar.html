@@ -6,134 +6,201 @@
 <meta name="theme-color" content="#be185d">
 <title>Pagar Cuota · Escuela de Lenguaje Blanca Nieves</title>
 <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+
 <style>
-:root{--pink:#be185d;--pink2:#ec4899;--green:#16803a;--red:#d92d20;--bg:#fff8fc;--card:#fff;--text:#172033;--muted:#667085;--border:#eadbe6}
-*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:linear-gradient(#fff,var(--bg));color:var(--text)}
-button,input{font:inherit}.wrap{width:min(760px,calc(100% - 24px));margin:auto;padding:18px 0 50px}.card{background:var(--card);border:1px solid var(--border);border-radius:22px;padding:18px;margin-bottom:14px}
-.brand{text-align:center}.logo{width:115px;height:115px;object-fit:contain;border-radius:18px}.eyebrow{color:var(--pink);font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
-h1{margin:7px 0 4px;font-size:30px}.sub,.help{color:var(--muted);font-size:14px;line-height:1.45}.notice{margin-top:14px;border-radius:14px;padding:12px 13px;background:#fff4f8;border:1px solid #f5c5dc;font-size:13px}
-label{display:block;font-size:13px;font-weight:800}input{width:100%;margin-top:6px;padding:14px 13px;border:1px solid var(--border);border-radius:13px;outline:none;text-transform:uppercase}
-.btn{display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--border);border-radius:13px;background:#fff;padding:12px 15px;font-weight:850;cursor:pointer;color:var(--text)}
-.primary{background:linear-gradient(135deg,var(--pink),var(--pink2));color:#fff;border:0}.green{background:var(--green);color:#fff;border:0}.btn:disabled{opacity:.5}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.actions .btn{flex:1}
-.hidden{display:none!important}.student{display:grid;grid-template-columns:1fr auto;gap:8px}.amount{font-size:22px;font-weight:900}.course{color:var(--muted);font-size:13px}.months{display:grid;gap:8px;margin-top:14px}
-.month{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;border:1px solid var(--border);border-radius:14px;padding:11px}.month input{width:auto;margin:0}.name{font-weight:850}
-.badge{padding:5px 9px;border-radius:999px;font-size:11px;font-weight:850}.paid{background:#ecfdf3;color:#067647}.pending{background:#fff7ed;color:#b54708}.summary{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:14px;padding-top:14px;border-top:1px solid var(--border)}
-.msg{margin-top:10px;font-size:13px}.error{color:var(--red)}.ok{color:var(--green)}
-</style>
-</head>
-<body>
-<main class="wrap">
-<section class="card brand">
-<img class="logo" src="/logo-blanca-nieves.jpg" alt="Logo Escuela de Lenguaje Blanca Nieves">
-<div class="eyebrow">Escuela de Lenguaje Blanca Nieves</div>
-<h1>Pagar Cuota</h1>
-<p class="sub">Consulta las cuotas del estudiante y selecciona las que deseas pagar.</p>
-</section>
+:root{
+  --pink:#be185d;
+  --pink2:#ec4899;
+  --green:#16803a;
+  --red:#d92d20;
+  --bg:#fff8fc;
+  --card:#fff;
+  --text:#172033;
+  --muted:#667085;
+  --border:#eadbe6;
+  --amber:#b54708
+}
 
-<section id="searchCard" class="card">
-<h2>Buscar estudiante</h2>
-<p class="help">Ingrese el <b>primer nombre y los dos apellidos</b>.</p>
-<div class="notice">Puede escribir con minúsculas o acentos. El sistema convertirá automáticamente a <b>MAYÚSCULAS, SIN ACENTOS</b> y corregirá espacios dobles.</div>
-<label style="margin-top:14px">Nombre del estudiante
-<input id="studentName" autocomplete="off" placeholder="SOFIA MARTINEZ GONZALEZ" maxlength="90">
-</label>
-<div class="actions"><button id="searchBtn" class="btn primary">Buscar estudiante</button></div>
-<div id="searchMsg" class="msg"></div>
-</section>
+*{box-sizing:border-box}
 
-<section id="studentCard" class="card hidden">
-<div class="student"><div><div class="eyebrow">Estudiante encontrado</div><h2 id="studentTitle"></h2><div id="studentCourse" class="course"></div></div><div><div class="course">Cuota mensual</div><div id="studentAmount" class="amount">$0</div></div></div>
-<div id="months" class="months"></div>
-<div class="summary"><div><div class="course">Total seleccionado</div><strong id="selectedTotal">$0</strong></div><button id="payBtn" class="btn green" disabled>Continuar al pago</button></div>
-<div id="payMsg" class="msg"></div>
-<div class="actions"><button id="newSearchBtn" class="btn">Buscar otro estudiante</button></div>
-</section>
-</main>
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,Segoe UI,sans-serif;
+  background:linear-gradient(#fff,var(--bg));
+  color:var(--text)
+}
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="/supabase-config.js"></script>
-<script>
-(() => {
- const $=s=>document.querySelector(s);
- if(!window.BN_SUPABASE_URL||!window.BN_SUPABASE_ANON_KEY){
-   document.body.innerHTML='<main class="wrap"><section class="card"><h2>Configuración incompleta</h2><p>No se pudo conectar con la base de datos.</p></section></main>';return;
- }
- const sb=supabase.createClient(window.BN_SUPABASE_URL,window.BN_SUPABASE_ANON_KEY);
- const money=n=>new Intl.NumberFormat('es-CL',{style:'currency',currency:'CLP',maximumFractionDigits:0}).format(Number(n)||0);
+button,input{font:inherit}
 
- // Importante: normalizamos solo al BUSCAR.
- // Así el usuario puede escribir espacios normalmente en el teléfono.
- function normalizeName(v){
-   return String(v||'')
-     .normalize('NFD')
-     .replace(/[\u0300-\u036f]/g,'')
-     .toUpperCase()
-     .replace(/\s+/g,' ')
-     .trim();
- }
+.wrap{
+  width:min(760px,calc(100% - 24px));
+  margin:auto;
+  padding:18px 0 50px
+}
 
- const input=$('#studentName');
+.card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:22px;
+  padding:18px;
+  margin-bottom:14px
+}
 
- async function lookup(){
-   const name=normalizeName(input.value);
-   $('#searchMsg').textContent='';
-   input.value=name;
+.brand{text-align:center}
 
-   if(name.split(' ').filter(Boolean).length<3){
-     $('#searchMsg').innerHTML='<span class="error">Ingrese el primer nombre y los dos apellidos.</span>';
-     return;
-   }
+.logo{
+  width:115px;
+  height:115px;
+  object-fit:contain;
+  border-radius:18px
+}
 
-   $('#searchBtn').disabled=true;
-   $('#searchBtn').textContent='Buscando...';
+.eyebrow{
+  color:var(--pink);
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:.12em;
+  text-transform:uppercase
+}
 
-   const {data,error}=await sb.rpc('portal_student_lookup',{
-     p_name:name,
-     p_year:new Date().getFullYear()
-   });
+h1{margin:7px 0 4px;font-size:30px}
+h2{margin:0 0 10px}
 
-   $('#searchBtn').disabled=false;
-   $('#searchBtn').textContent='Buscar estudiante';
+.sub,.help{
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.45
+}
 
-   if(error){
-     console.error(error);
-     $('#searchMsg').innerHTML='<span class="error">No fue posible consultar. Intente nuevamente.</span>';
-     return;
-   }
-   if(!data||data.status==='not_found'){
-     $('#searchMsg').innerHTML='<span class="error">Estudiante no encontrado.</span>';
-     return;
-   }
-   if(data.status==='multiple'){
-     $('#searchMsg').innerHTML='<span class="error">Existe más de un estudiante con ese nombre. Comuníquese con la Escuela.</span>';
-     return;
-   }
+.notice{
+  margin-top:14px;
+  border-radius:14px;
+  padding:12px 13px;
+  background:#fff4f8;
+  border:1px solid #f5c5dc;
+  font-size:13px
+}
 
-   $('#searchCard').classList.add('hidden');
-   $('#studentCard').classList.remove('hidden');
-   $('#studentTitle').textContent=data.student;
-   $('#studentCourse').textContent=data.course||'';
-   $('#studentAmount').textContent=money(data.amount);
+.transfer{
+  margin-top:12px;
+  border-radius:16px;
+  padding:14px;
+  background:#f8fafc;
+  border:1px solid #dce3ea
+}
 
-   $('#months').innerHTML=(data.months||[]).map(m=>`<label class="month"><input type="checkbox" data-month="${m.month}" data-amount="${data.amount}" ${m.paid?'disabled':''}><div><div class="name">${m.month}</div><div class="course">${m.paid&&m.paid_date?'Pagado: '+m.paid_date:money(data.amount)}</div></div><span class="badge ${m.paid?'paid':'pending'}">${m.paid?'PAGADO':'PENDIENTE'}</span></label>`).join('');
+.transferRow{
+  display:grid;
+  grid-template-columns:130px 1fr;
+  gap:8px;
+  padding:6px 0;
+  border-bottom:1px dashed #d8dee6
+}
 
-   $('#months').querySelectorAll('input[type=checkbox]').forEach(c=>c.addEventListener('change',updateTotal));
-   $('#payBtn').dataset.studentId=data.student_id;
-   updateTotal();
- }
+.transferRow:last-child{border-bottom:0}
 
- function updateTotal(){
-   const c=[...$('#months').querySelectorAll('input:checked')];
-   const t=c.reduce((a,x)=>a+Number(x.dataset.amount||0),0);
-   $('#selectedTotal').textContent=money(t);
-   $('#payBtn').disabled=!c.length;
- }
+.transferKey{
+  color:var(--muted);
+  font-size:13px
+}
 
- $('#searchBtn').onclick=lookup;
- input.addEventListener('keydown',e=>{if(e.key==='Enter')lookup()});
- $('#newSearchBtn').onclick=()=>location.reload();
- $('#payBtn').onclick=()=>{$('#payMsg').innerHTML='<span class="ok">La consulta y selección ya funcionan. En la siguiente etapa conectaremos este botón con la transferencia automática.</span>';};
-})();
-</script>
-</body>
-</html>
+.transferVal{
+  font-weight:800;
+  word-break:break-word
+}
+
+label{
+  display:block;
+  font-size:13px;
+  font-weight:800
+}
+
+input{
+  width:100%;
+  margin-top:6px;
+  padding:14px 13px;
+  border:1px solid var(--border);
+  border-radius:13px;
+  outline:none;
+  text-transform:uppercase
+}
+
+input[type=file]{
+  text-transform:none;
+  background:#fff
+}
+
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border:1px solid var(--border);
+  border-radius:13px;
+  background:#fff;
+  padding:12px 15px;
+  font-weight:850;
+  cursor:pointer;
+  color:var(--text)
+}
+
+.primary{
+  background:linear-gradient(135deg,var(--pink),var(--pink2));
+  color:#fff;
+  border:0
+}
+
+.green{
+  background:var(--green);
+  color:#fff;
+  border:0
+}
+
+.btn:disabled{
+  opacity:.5;
+  cursor:not-allowed
+}
+
+.actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:12px
+}
+
+.actions .btn{flex:1}
+
+.hidden{display:none!important}
+
+.student{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:8px
+}
+
+.amount{
+  font-size:22px;
+  font-weight:900
+}
+
+.course{
+  color:var(--muted);
+  font-size:13px
+}
+
+.months{
+  display:grid;
+  gap:8px;
+  margin-top:14px
+}
+
+.month{
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  gap:10px;
+  align-items:center;
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:11px
+}
+
+.month input{
