@@ -60,26 +60,77 @@ label{display:block;font-size:13px;font-weight:800}input{width:100%;margin-top:6
  }
  const sb=supabase.createClient(window.BN_SUPABASE_URL,window.BN_SUPABASE_ANON_KEY);
  const money=n=>new Intl.NumberFormat('es-CL',{style:'currency',currency:'CLP',maximumFractionDigits:0}).format(Number(n)||0);
- function normalizeName(v){return String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toUpperCase().replace(/\s+/g,' ').trim();}
- const input=$('#studentName');
- input.addEventListener('input',()=>{input.value=normalizeName(input.value)});
- async function lookup(){
-   const name=normalizeName(input.value); $('#searchMsg').textContent='';
-   if(name.split(' ').filter(Boolean).length<3){$('#searchMsg').innerHTML='<span class="error">Ingrese el primer nombre y los dos apellidos.</span>';return;}
-   $('#searchBtn').disabled=true; $('#searchBtn').textContent='Buscando...';
-   const {data,error}=await sb.rpc('portal_student_lookup',{p_name:name,p_year:new Date().getFullYear()});
-   $('#searchBtn').disabled=false; $('#searchBtn').textContent='Buscar estudiante';
-   if(error){console.error(error);$('#searchMsg').innerHTML='<span class="error">No fue posible consultar. Intente nuevamente.</span>';return;}
-   if(!data||data.status==='not_found'){$('#searchMsg').innerHTML='<span class="error">Estudiante no encontrado.</span>';return;}
-   if(data.status==='multiple'){$('#searchMsg').innerHTML='<span class="error">Existe más de un estudiante con ese nombre. Comuníquese con la Escuela.</span>';return;}
-   $('#searchCard').classList.add('hidden'); $('#studentCard').classList.remove('hidden');
-   $('#studentTitle').textContent=data.student; $('#studentCourse').textContent=data.course||''; $('#studentAmount').textContent=money(data.amount);
-   $('#months').innerHTML=(data.months||[]).map(m=>`<label class="month"><input type="checkbox" data-month="${m.month}" data-amount="${data.amount}" ${m.paid?'disabled':''}><div><div class="name">${m.month}</div><div class="course">${m.paid&&m.paid_date?'Pagado: '+m.paid_date:money(data.amount)}</div></div><span class="badge ${m.paid?'paid':'pending'}">${m.paid?'PAGADO':'PENDIENTE'}</span></label>`).join('');
-   $('#months').querySelectorAll('input[type=checkbox]').forEach(c=>c.addEventListener('change',updateTotal));
-   $('#payBtn').dataset.studentId=data.student_id; updateTotal();
+
+ // Importante: normalizamos solo al BUSCAR.
+ // Así el usuario puede escribir espacios normalmente en el teléfono.
+ function normalizeName(v){
+   return String(v||'')
+     .normalize('NFD')
+     .replace(/[\u0300-\u036f]/g,'')
+     .toUpperCase()
+     .replace(/\s+/g,' ')
+     .trim();
  }
- function updateTotal(){const c=[...$('#months').querySelectorAll('input:checked')];const t=c.reduce((a,x)=>a+Number(x.dataset.amount||0),0);$('#selectedTotal').textContent=money(t);$('#payBtn').disabled=!c.length;}
- $('#searchBtn').onclick=lookup; input.addEventListener('keydown',e=>{if(e.key==='Enter')lookup()});
+
+ const input=$('#studentName');
+
+ async function lookup(){
+   const name=normalizeName(input.value);
+   $('#searchMsg').textContent='';
+   input.value=name;
+
+   if(name.split(' ').filter(Boolean).length<3){
+     $('#searchMsg').innerHTML='<span class="error">Ingrese el primer nombre y los dos apellidos.</span>';
+     return;
+   }
+
+   $('#searchBtn').disabled=true;
+   $('#searchBtn').textContent='Buscando...';
+
+   const {data,error}=await sb.rpc('portal_student_lookup',{
+     p_name:name,
+     p_year:new Date().getFullYear()
+   });
+
+   $('#searchBtn').disabled=false;
+   $('#searchBtn').textContent='Buscar estudiante';
+
+   if(error){
+     console.error(error);
+     $('#searchMsg').innerHTML='<span class="error">No fue posible consultar. Intente nuevamente.</span>';
+     return;
+   }
+   if(!data||data.status==='not_found'){
+     $('#searchMsg').innerHTML='<span class="error">Estudiante no encontrado.</span>';
+     return;
+   }
+   if(data.status==='multiple'){
+     $('#searchMsg').innerHTML='<span class="error">Existe más de un estudiante con ese nombre. Comuníquese con la Escuela.</span>';
+     return;
+   }
+
+   $('#searchCard').classList.add('hidden');
+   $('#studentCard').classList.remove('hidden');
+   $('#studentTitle').textContent=data.student;
+   $('#studentCourse').textContent=data.course||'';
+   $('#studentAmount').textContent=money(data.amount);
+
+   $('#months').innerHTML=(data.months||[]).map(m=>`<label class="month"><input type="checkbox" data-month="${m.month}" data-amount="${data.amount}" ${m.paid?'disabled':''}><div><div class="name">${m.month}</div><div class="course">${m.paid&&m.paid_date?'Pagado: '+m.paid_date:money(data.amount)}</div></div><span class="badge ${m.paid?'paid':'pending'}">${m.paid?'PAGADO':'PENDIENTE'}</span></label>`).join('');
+
+   $('#months').querySelectorAll('input[type=checkbox]').forEach(c=>c.addEventListener('change',updateTotal));
+   $('#payBtn').dataset.studentId=data.student_id;
+   updateTotal();
+ }
+
+ function updateTotal(){
+   const c=[...$('#months').querySelectorAll('input:checked')];
+   const t=c.reduce((a,x)=>a+Number(x.dataset.amount||0),0);
+   $('#selectedTotal').textContent=money(t);
+   $('#payBtn').disabled=!c.length;
+ }
+
+ $('#searchBtn').onclick=lookup;
+ input.addEventListener('keydown',e=>{if(e.key==='Enter')lookup()});
  $('#newSearchBtn').onclick=()=>location.reload();
  $('#payBtn').onclick=()=>{$('#payMsg').innerHTML='<span class="ok">La consulta y selección ya funcionan. En la siguiente etapa conectaremos este botón con la transferencia automática.</span>';};
 })();
