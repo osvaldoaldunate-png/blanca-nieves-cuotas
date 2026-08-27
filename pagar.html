@@ -422,7 +422,45 @@ Luego adjunta el comprobante para que la Escuela pueda revisarlo.
 
 </div>
 
-<div class="notice">
+<div style="margin-top:18px">
+  <button id="transferNowBtn" class="btn green" style="width:100%;font-size:18px;padding:16px">
+    🏦 TRANSFERIR AHORA
+  </button>
+</div>
+
+<div id="bankSelector" class="hidden" style="margin-top:14px">
+  <label>
+    Seleccione su banco o cuenta digital
+    <select id="userBank" style="width:100%;margin-top:6px;padding:14px;border:1px solid var(--border);border-radius:13px;background:white">
+      <option value="">Seleccionar...</option>
+
+      <option value="https://www.bancoestado.cl/">BancoEstado</option>
+      <option value="https://www.bancochile.cl/">Banco de Chile / Edwards</option>
+      <option value="https://banco.santander.cl/">Santander</option>
+      <option value="https://www.bci.cl/">BCI</option>
+      <option value="https://www.scotiabankchile.cl/">Scotiabank</option>
+      <option value="https://www.itau.cl/">Itaú</option>
+      <option value="https://www.bice.cl/">Banco BICE</option>
+      <option value="https://www.bancofalabella.cl/">Banco Falabella</option>
+      <option value="https://www.bancoripley.cl/">Banco Ripley</option>
+      <option value="https://www.bancoconsorcio.cl/">Banco Consorcio</option>
+      <option value="https://www.bancointernacional.cl/">Banco Internacional</option>
+      <option value="https://www.tanner.cl/">Tanner Banco Digital</option>
+      <option value="https://www.tenpo.cl/">Tenpo / Tenpo Bank</option>
+
+      <option value="https://www.machbank.cl/">MACHBANK</option>
+      <option value="https://www.mercadopago.cl/">Mercado Pago</option>
+    </select>
+  </label>
+
+  <button id="openBankBtn" class="btn primary" style="width:100%;margin-top:10px">
+    ABRIR BANCO
+  </button>
+
+  <div class="help" style="margin-top:8px">
+    Realice la transferencia en su banco y luego vuelva a esta página para adjuntar el comprobante.
+  </div>
+</div><div class="notice">
 <b>Importante:</b>
 el comprobante quedará con estado
 <b>EN REVISIÓN</b>.
@@ -1361,7 +1399,44 @@ goBack;
 
 $('#submitBtn')
 .onclick =
-submitReceipt;
+submitReceipt;const transferNowBtn = $('#transferNowBtn');
+const bankSelector = $('#bankSelector');
+const userBank = $('#userBank');
+const openBankBtn = $('#openBankBtn');
+
+if (transferNowBtn) {
+  transferNowBtn.onclick = () => {
+    bankSelector.classList.remove('hidden');
+    bankSelector.scrollIntoView({
+      behavior: 'smooth',
+      block: 'center'
+    });
+  };
+}
+
+if (openBankBtn) {
+  openBankBtn.onclick = () => {
+    const url = userBank.value;
+
+    if (!url) {
+      alert('Seleccione su banco o cuenta digital.');
+      return;
+    }
+
+    // Conserva la selección antes de salir al banco.
+    sessionStorage.setItem(
+      'bnPagoPendiente',
+      JSON.stringify({
+        student: currentStudent ? currentStudent.student : '',
+        student_id: currentStudent ? currentStudent.student_id : null,
+        months: selectedMonths,
+        amount: selectedAmount
+      })
+    );
+
+    window.open(url, '_blank');
+  };
+  }
 
 
 })();
