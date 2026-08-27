@@ -204,3 +204,1169 @@ input[type=file]{
 }
 
 .month input{
+  width:auto;
+  margin:0
+}
+
+.name{font-weight:850}
+
+.badge{
+  padding:5px 9px;
+  border-radius:999px;
+  font-size:11px;
+  font-weight:850
+}
+
+.paid{
+  background:#ecfdf3;
+  color:#067647
+}
+
+.pending{
+  background:#fff7ed;
+  color:#b54708
+}
+
+.summary{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  margin-top:14px;
+  padding-top:14px;
+  border-top:1px solid var(--border)
+}
+
+.msg{
+  margin-top:10px;
+  font-size:13px
+}
+
+.error{color:var(--red)}
+.ok{color:var(--green)}
+.review{color:var(--amber)}
+
+.successBox{
+  text-align:center;
+  padding:8px 2px
+}
+
+.successIcon{
+  width:68px;
+  height:68px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  margin:0 auto 14px;
+  background:#ecfdf3;
+  color:#067647;
+  font-size:34px;
+  font-weight:900
+}
+
+.fileHint{
+  font-size:12px;
+  color:var(--muted);
+  margin-top:6px
+}
+
+@media(max-width:520px){
+  .student{grid-template-columns:1fr}
+  .summary{align-items:stretch;flex-direction:column}
+  .summary .btn{width:100%}
+  .transferRow{grid-template-columns:1fr}
+}
+</style>
+</head>
+
+<body>
+
+<main class="wrap">
+
+<section class="card brand">
+<img class="logo" src="/logo-blanca-nieves.jpg" alt="Logo Escuela de Lenguaje Blanca Nieves">
+<div class="eyebrow">Escuela de Lenguaje Blanca Nieves</div>
+<h1>Pagar Cuota</h1>
+<p class="sub">Consulta las cuotas del estudiante, realiza la transferencia y adjunta el comprobante.</p>
+</section>
+
+<section id="searchCard" class="card">
+<h2>Buscar estudiante</h2>
+
+<p class="help">
+Ingrese el <b>primer nombre y los dos apellidos</b>.
+</p>
+
+<div class="notice">
+Puede escribir con minúsculas o acentos.
+El sistema convertirá automáticamente a
+<b>MAYÚSCULAS, SIN ACENTOS</b>
+y corregirá espacios dobles.
+</div>
+
+<label style="margin-top:14px">
+Nombre del estudiante
+<input
+id="studentName"
+autocomplete="off"
+placeholder="SOFIA MARTINEZ GONZALEZ"
+maxlength="90">
+</label>
+
+<div class="actions">
+<button id="searchBtn" class="btn primary">
+Buscar estudiante
+</button>
+</div>
+
+<div id="searchMsg" class="msg"></div>
+
+</section>
+
+<section id="studentCard" class="card hidden">
+
+<div class="student">
+
+<div>
+<div class="eyebrow">Estudiante encontrado</div>
+<h2 id="studentTitle"></h2>
+<div id="studentCourse" class="course"></div>
+</div>
+
+<div>
+<div class="course">Cuota mensual</div>
+<div id="studentAmount" class="amount">$0</div>
+</div>
+
+</div>
+
+<div id="months" class="months"></div>
+
+<div class="summary">
+
+<div>
+<div class="course">Total seleccionado</div>
+<strong id="selectedTotal">$0</strong>
+</div>
+
+<button id="payBtn" class="btn green" disabled>
+Continuar al pago
+</button>
+
+</div>
+
+<div id="payMsg" class="msg"></div>
+
+<div class="actions">
+<button id="newSearchBtn" class="btn">
+Buscar otro estudiante
+</button>
+</div>
+
+</section>
+
+<section id="paymentCard" class="card hidden">
+
+<div class="eyebrow">Transferencia bancaria</div>
+
+<h2 style="margin-top:6px">
+Datos para pagar
+</h2>
+
+<p class="help">
+Transfiere exactamente el total seleccionado.
+Luego adjunta el comprobante para que la Escuela pueda revisarlo.
+</p>
+
+<div class="transfer">
+
+<div class="transferRow">
+<div class="transferKey">Titular</div>
+<div id="bankHolder" class="transferVal"></div>
+</div>
+
+<div class="transferRow">
+<div class="transferKey">RUT</div>
+<div id="bankRut" class="transferVal"></div>
+</div>
+
+<div class="transferRow">
+<div class="transferKey">Banco</div>
+<div id="bankName" class="transferVal"></div>
+</div>
+
+<div class="transferRow">
+<div class="transferKey">Tipo de cuenta</div>
+<div id="bankType" class="transferVal"></div>
+</div>
+
+<div class="transferRow">
+<div class="transferKey">N.º de cuenta</div>
+<div id="bankNumber" class="transferVal"></div>
+</div>
+
+<div class="transferRow">
+<div class="transferKey">Correo</div>
+<div id="bankEmail" class="transferVal"></div>
+</div>
+
+<div class="transferRow">
+<div class="transferKey">Monto</div>
+<div id="paymentTotal" class="transferVal"></div>
+</div>
+
+<div class="transferRow">
+<div class="transferKey">Cuotas</div>
+<div id="paymentMonths" class="transferVal"></div>
+</div>
+
+</div>
+
+<div class="notice">
+<b>Importante:</b>
+el comprobante quedará con estado
+<b>EN REVISIÓN</b>.
+La cuota cambiará a
+<b>PAGADO</b>
+cuando la administración confirme que la transferencia fue recibida.
+</div>
+
+<label style="margin-top:16px">
+Número de operación / referencia (opcional)
+
+<input
+id="operationNumber"
+autocomplete="off"
+maxlength="80"
+placeholder="EJ: 123456789">
+
+</label>
+
+<label style="margin-top:14px">
+Comprobante de transferencia
+
+<input
+id="receiptFile"
+type="file"
+accept="image/jpeg,image/png,image/webp,application/pdf">
+
+</label>
+
+<div class="fileHint">
+Formatos permitidos:
+JPG, PNG, WEBP o PDF.
+Máximo 8 MB.
+</div>
+
+<div class="actions">
+
+<button id="backBtn" class="btn">
+Volver
+</button>
+
+<button id="submitBtn" class="btn primary">
+Enviar comprobante
+</button>
+
+</div>
+
+<div id="submitMsg" class="msg"></div>
+
+</section>
+
+<section id="successCard" class="card hidden">
+
+<div class="successBox">
+
+<div class="successIcon">
+✓
+</div>
+
+<div class="eyebrow">
+Comprobante recibido
+</div>
+
+<h2 style="margin-top:8px">
+Pago en revisión
+</h2>
+
+<p class="help">
+El comprobante fue registrado correctamente.
+La administración revisará la transferencia y,
+una vez confirmada,
+las cuotas seleccionadas aparecerán como
+<b>PAGADAS</b>.
+</p>
+
+<div id="successDetail" class="notice"></div>
+
+<div class="actions">
+<button
+class="btn primary"
+onclick="location.reload()">
+Realizar otra consulta
+</button>
+</div>
+
+</div>
+
+</section>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/supabase-config.js"></script>
+
+<script>
+
+(() => {
+
+const $ = s => document.querySelector(s);
+
+if(
+!window.BN_SUPABASE_URL ||
+!window.BN_SUPABASE_ANON_KEY
+){
+
+document.body.innerHTML =
+'<main class="wrap">'+
+'<section class="card">'+
+'<h2>Configuración incompleta</h2>'+
+'<p>No se pudo conectar con la base de datos.</p>'+
+'</section>'+
+'</main>';
+
+return;
+
+}
+
+const sb = supabase.createClient(
+window.BN_SUPABASE_URL,
+window.BN_SUPABASE_ANON_KEY
+);
+
+const money = n =>
+new Intl.NumberFormat(
+'es-CL',
+{
+style:'currency',
+currency:'CLP',
+maximumFractionDigits:0
+}
+).format(Number(n)||0);
+
+
+/*
+IMPORTANTE
+
+DESPUÉS VAMOS A CAMBIAR ESTOS DATOS
+POR LOS DATOS BANCARIOS REALES.
+
+POR AHORA PUEDEN QUEDAR ASÍ.
+*/
+
+const BANK = {
+
+holder:'ESCUELA DE LENGUAJE BLANCA NIEVES',
+
+rut:'POR CONFIGURAR',
+
+bank:'POR CONFIGURAR',
+
+type:'POR CONFIGURAR',
+
+number:'POR CONFIGURAR',
+
+email:'POR CONFIGURAR'
+
+};
+
+
+let currentStudent = null;
+
+let selectedMonths = [];
+
+let selectedAmount = 0;
+
+
+function normalizeName(v){
+
+return String(v||'')
+
+.normalize('NFD')
+
+.replace(/[\u0300-\u036f]/g,'')
+
+.toUpperCase()
+
+.replace(/\s+/g,' ')
+
+.trim();
+
+}
+
+
+function safeFilePart(v){
+
+return normalizeName(v)
+
+.replace(/[^A-Z0-9]+/g,'-')
+
+.replace(/^-+|-+$/g,'')
+
+.slice(0,60)
+
+|| 'ESTUDIANTE';
+
+}
+
+
+function selectedData(){
+
+const checked =
+[
+...$('#months')
+.querySelectorAll(
+'input:checked'
+)
+];
+
+const months =
+checked.map(
+x => x.dataset.month
+);
+
+const total =
+checked.reduce(
+(a,x) =>
+a +
+Number(
+x.dataset.amount || 0
+),
+0
+);
+
+return {
+checked,
+months,
+total
+};
+
+}
+
+
+const input =
+$('#studentName');
+
+
+async function lookup(){
+
+const name =
+normalizeName(
+input.value
+);
+
+$('#searchMsg')
+.textContent='';
+
+input.value=name;
+
+
+if(
+name
+.split(' ')
+.filter(Boolean)
+.length < 3
+){
+
+$('#searchMsg')
+.innerHTML =
+'<span class="error">'+
+'Ingrese el primer nombre y los dos apellidos.'+
+'</span>';
+
+return;
+
+}
+
+
+$('#searchBtn')
+.disabled=true;
+
+$('#searchBtn')
+.textContent='Buscando...';
+
+
+const {
+data,
+error
+} =
+await sb.rpc(
+'portal_student_lookup',
+{
+p_name:name,
+p_year:
+new Date()
+.getFullYear()
+}
+);
+
+
+$('#searchBtn')
+.disabled=false;
+
+$('#searchBtn')
+.textContent='Buscar estudiante';
+
+
+if(error){
+
+console.error(error);
+
+$('#searchMsg')
+.innerHTML =
+'<span class="error">'+
+'No fue posible consultar. Intente nuevamente.'+
+'</span>';
+
+return;
+
+}
+
+
+if(
+!data ||
+data.status==='not_found'
+){
+
+$('#searchMsg')
+.innerHTML =
+'<span class="error">'+
+'Estudiante no encontrado.'+
+'</span>';
+
+return;
+
+}
+
+
+if(
+data.status==='multiple'
+){
+
+$('#searchMsg')
+.innerHTML =
+'<span class="error">'+
+'Existe más de un estudiante con ese nombre. Comuníquese con la Escuela.'+
+'</span>';
+
+return;
+
+}
+
+
+currentStudent = data;
+
+
+$('#searchCard')
+.classList
+.add('hidden');
+
+
+$('#studentCard')
+.classList
+.remove('hidden');
+
+
+$('#studentTitle')
+.textContent =
+data.student;
+
+
+$('#studentCourse')
+.textContent =
+data.course || '';
+
+
+$('#studentAmount')
+.textContent =
+money(
+data.amount
+);
+
+
+$('#months')
+.innerHTML =
+(data.months || [])
+.map(
+m =>
+
+`
+<label class="month">
+
+<input
+type="checkbox"
+data-month="${m.month}"
+data-amount="${data.amount}"
+${m.paid?'disabled':''}>
+
+<div>
+
+<div class="name">
+${m.month}
+</div>
+
+<div class="course">
+
+${
+m.paid &&
+m.paid_date
+
+?
+
+'Pagado: ' +
+m.paid_date
+
+:
+
+money(
+data.amount
+)
+
+}
+
+</div>
+
+</div>
+
+<span
+class="badge
+${m.paid?'paid':'pending'}">
+
+${m.paid?'PAGADO':'PENDIENTE'}
+
+</span>
+
+</label>
+`
+
+)
+.join('');
+
+
+$('#months')
+.querySelectorAll(
+'input[type=checkbox]'
+)
+.forEach(
+c =>
+c.addEventListener(
+'change',
+updateTotal
+)
+);
+
+
+updateTotal();
+
+}
+
+
+function updateTotal(){
+
+const {
+months,
+total
+}
+=
+selectedData();
+
+
+$('#selectedTotal')
+.textContent =
+money(total);
+
+
+$('#payBtn')
+.disabled =
+!months.length;
+
+}
+
+
+function showPayment(){
+
+const {
+months,
+total
+}
+=
+selectedData();
+
+
+if(
+!currentStudent ||
+!months.length
+)
+return;
+
+
+selectedMonths =
+months;
+
+
+selectedAmount =
+total;
+
+
+$('#bankHolder')
+.textContent =
+BANK.holder;
+
+
+$('#bankRut')
+.textContent =
+BANK.rut;
+
+
+$('#bankName')
+.textContent =
+BANK.bank;
+
+
+$('#bankType')
+.textContent =
+BANK.type;
+
+
+$('#bankNumber')
+.textContent =
+BANK.number;
+
+
+$('#bankEmail')
+.textContent =
+BANK.email;
+
+
+$('#paymentTotal')
+.textContent =
+money(total);
+
+
+$('#paymentMonths')
+.textContent =
+months.join(', ');
+
+
+$('#studentCard')
+.classList
+.add('hidden');
+
+
+$('#paymentCard')
+.classList
+.remove('hidden');
+
+
+window.scrollTo({
+top:0,
+behavior:'smooth'
+});
+
+}
+
+
+function goBack(){
+
+$('#paymentCard')
+.classList
+.add('hidden');
+
+
+$('#studentCard')
+.classList
+.remove('hidden');
+
+
+$('#submitMsg')
+.textContent='';
+
+
+window.scrollTo({
+top:0,
+behavior:'smooth'
+});
+
+}
+
+
+async function submitReceipt(){
+
+$('#submitMsg')
+.textContent='';
+
+
+if(
+!currentStudent ||
+!selectedMonths.length ||
+!selectedAmount
+){
+
+$('#submitMsg')
+.innerHTML =
+'<span class="error">'+
+'No se pudo recuperar la selección de cuotas. Vuelva a intentarlo.'+
+'</span>';
+
+return;
+
+}
+
+
+const file =
+$('#receiptFile')
+.files[0];
+
+
+if(!file){
+
+$('#submitMsg')
+.innerHTML =
+'<span class="error">'+
+'Debe adjuntar el comprobante de transferencia.'+
+'</span>';
+
+return;
+
+}
+
+
+const allowed =
+[
+'image/jpeg',
+'image/png',
+'image/webp',
+'application/pdf'
+];
+
+
+if(
+!allowed.includes(
+file.type
+)
+){
+
+$('#submitMsg')
+.innerHTML =
+'<span class="error">'+
+'Formato no permitido. Use JPG, PNG, WEBP o PDF.'+
+'</span>';
+
+return;
+
+}
+
+
+if(
+file.size >
+8 * 1024 * 1024
+){
+
+$('#submitMsg')
+.innerHTML =
+'<span class="error">'+
+'El archivo supera el máximo de 8 MB.'+
+'</span>';
+
+return;
+
+}
+
+
+const ext =
+(
+file.name
+.split('.')
+.pop()
+||
+'bin'
+)
+.toLowerCase()
+.replace(
+/[^a-z0-9]/g,
+''
+);
+
+
+const stamp =
+new Date()
+.toISOString()
+.replace(
+/[:.]/g,
+'-'
+);
+
+
+const studentPart =
+safeFilePart(
+currentStudent.student
+);
+
+
+const random =
+crypto.randomUUID
+
+?
+
+crypto.randomUUID()
+
+:
+
+Math.random()
+.toString(36)
+.slice(2);
+
+
+const path =
+`${new Date().getFullYear()}/${studentPart}/${stamp}-${random}.${ext}`;
+
+
+$('#submitBtn')
+.disabled=true;
+
+
+$('#backBtn')
+.disabled=true;
+
+
+$('#submitBtn')
+.textContent =
+'Enviando...';
+
+
+$('#submitMsg')
+.innerHTML =
+'<span class="review">'+
+'Subiendo comprobante...'+
+'</span>';
+
+
+const upload =
+await sb.storage
+
+.from(
+'comprobantes-pago'
+)
+
+.upload(
+path,
+file,
+{
+cacheControl:'3600',
+upsert:false,
+contentType:file.type
+}
+);
+
+
+if(
+upload.error
+){
+
+console.error(
+upload.error
+);
+
+
+$('#submitBtn')
+.disabled=false;
+
+
+$('#backBtn')
+.disabled=false;
+
+
+$('#submitBtn')
+.textContent =
+'Enviar comprobante';
+
+
+$('#submitMsg')
+.innerHTML =
+'<span class="error">'+
+'No fue posible subir el comprobante. Intente nuevamente.'+
+'</span>';
+
+
+return;
+
+}
+
+
+$('#submitMsg')
+.innerHTML =
+'<span class="review">'+
+'Registrando solicitud de pago...'+
+'</span>';
+
+
+const operation =
+normalizeName(
+$('#operationNumber')
+.value
+);
+
+
+const payload = {
+
+student_id:
+currentStudent.student_id,
+
+year:
+new Date()
+.getFullYear(),
+
+months:
+selectedMonths,
+
+amount:
+selectedAmount,
+
+status:
+'review',
+
+receipt_path:
+path,
+
+operation_number:
+operation || null
+
+};
+
+
+const {
+error
+}
+=
+await sb
+
+.from(
+'payment_submissions'
+)
+
+.insert(
+payload
+);
+
+
+if(error){
+
+console.error(
+error
+);
+
+
+$('#submitBtn')
+.disabled=false;
+
+
+$('#backBtn')
+.disabled=false;
+
+
+$('#submitBtn')
+.textContent =
+'Enviar comprobante';
+
+
+$('#submitMsg')
+.innerHTML =
+'<span class="error">'+
+'El comprobante se subió, pero no fue posible registrar la solicitud. Informe a la Escuela para revisar el envío.'+
+'</span>';
+
+
+return;
+
+}
+
+
+$('#paymentCard')
+.classList
+.add('hidden');
+
+
+$('#successCard')
+.classList
+.remove('hidden');
+
+
+$('#successDetail')
+.innerHTML =
+
+'<b>Estudiante:</b> ' +
+currentStudent.student +
+
+'<br><b>Cuotas:</b> ' +
+selectedMonths.join(', ') +
+
+'<br><b>Total:</b> ' +
+money(selectedAmount) +
+
+'<br><b>Estado:</b> EN REVISIÓN';
+
+
+window.scrollTo({
+top:0,
+behavior:'smooth'
+});
+
+}
+
+
+$('#searchBtn')
+.onclick =
+lookup;
+
+
+input.addEventListener(
+'keydown',
+e => {
+
+if(
+e.key === 'Enter'
+)
+lookup();
+
+}
+);
+
+
+$('#newSearchBtn')
+.onclick =
+() =>
+location.reload();
+
+
+$('#payBtn')
+.onclick =
+showPayment;
+
+
+$('#backBtn')
+.onclick =
+goBack;
+
+
+$('#submitBtn')
+.onclick =
+submitReceipt;
+
+
+})();
+
+</script>
+
+</body>
+</html>
